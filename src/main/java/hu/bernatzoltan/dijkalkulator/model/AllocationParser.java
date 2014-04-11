@@ -133,18 +133,49 @@ public class AllocationParser {
         }
         
         //megfelelo az idointervallum?
-        //TODO egyelore csak a honapokat ellenrzom, a hanokat is kellene
-        int startDateMonthOrdinal;
-        int endDateMonthOrdinal;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(startDate);
-        startDateMonthOrdinal = cal.get(Calendar.MONTH);
-        cal.setTime(endDate);
-        endDateMonthOrdinal = cal.get(Calendar.MONTH);
+        int startDateMonth;
+        int startDateYear;
+        int startDateDayOfMonth;
+
         
-        if(startDateMonthOrdinal!=endDateMonthOrdinal){
+        int endDateMonth;
+        int endDateYear;
+        int endDateDayOfMonth;
+        
+        int maxDayOfMounth;
+        
+        Calendar cal = Calendar.getInstance();
+        
+        cal.setTime(startDate);
+        startDateMonth = cal.get(Calendar.MONTH); //a honap sorszama
+        startDateYear = cal.get(Calendar.YEAR); //az ev
+        startDateDayOfMonth = cal.get(Calendar.DAY_OF_MONTH); //a nap sorszama a honapban
+        maxDayOfMounth = cal.getActualMaximum(Calendar.DAY_OF_MONTH); //az adott honap ucso napjanak sorszama
+        
+        cal.setTime(endDate);
+        endDateMonth = cal.get(Calendar.MONTH);
+        endDateYear = cal.get(Calendar.YEAR);
+        endDateDayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        
+        //ha nem a honap elso napjatol indul, hiba
+        if(startDateDayOfMonth!=1){
             throw new BusinessException("Invalid allocation: wrong date");
         }
+        //ha nem a ho utolso napja, hiba
+        if(endDateDayOfMonth!=maxDayOfMounth){
+            throw new BusinessException("Invalid allocation: wrong date");
+        }
+        
+        //evnek is passzolni kell
+        if(startDateYear!=endDateYear){
+            throw new BusinessException("Invalid allocation: wrong date");
+        }
+        
+        //honap csak azonos lehet, mert csak egyhavi lekotes lehet
+        if(startDateMonth!=endDateMonth){
+            throw new BusinessException("Invalid allocation: wrong date");
+        }
+        
         
         //kapacitas tipusa (M0 vagy M10)
         CapacityType capacityType;

@@ -1,4 +1,4 @@
-package hu.bernatzoltan.dijkalkulator.ui;
+package hu.bernatzoltan.dijkalkulator.ui.standard;
 
 import hu.bernatzoltan.dijkalkulator.model.Allocation;
 import hu.bernatzoltan.dijkalkulator.model.AllocationModelIF;

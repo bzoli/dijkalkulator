@@ -41,6 +41,60 @@ public class AllocationMemoryModelTest {
     public void tearDown() {
     }
 
+    
+    @Test//(expected = BusinessException.class)
+    public void testWrongDate()  throws BusinessException {
+        System.out.println("getTotalByPoint");
+        String allocationsString1 = "KAABA00011GN;2012-12-02;2012-12-31;M10;100 000;5000\n"; //hibas elso nap
+        String allocationsString2 = "HABEREGD1IIN;2012-12-01;2012-12-30;M0;70 000;3000\n"; //hibas  ucso nap
+        String allocationsString3 = "KEKALOCS11GN;2012-11-01;2012-12-31;M10;50 000;4000\n";  //hibas honap
+        String allocationsString4 = "VEBUDAOR1VEN;2011-05-01;2012-05-31;M0;10 000;1000\n"; //hibas ev
+        String allocationsString5 = "VEBUDAOR1VEN;2012-04-01;2012-04-31;M10;10 000;1000\n"; //hibas hibas datum
+
+        String fail = "";
+        AllocationMemoryModel model = null;
+        try {
+            model = AllocationMemoryModel.getInstance();
+        } catch (BusinessException ex) {
+            //ide ne jussunk el!
+            //fail("Can't get AllocationMemoryModel obj");
+            throw new BusinessException(ex.getMessage());
+        }
+        try {
+            model.loadAllocations(allocationsString1);
+            fail += "hibas elso nap ";
+        } catch (BusinessException ex) {
+            //jo ag
+        }
+        try {
+            model.loadAllocations(allocationsString2);
+            fail += "hibas  ucso nap ";
+        } catch (BusinessException ex) {
+            //jo ag
+        }
+        try {
+            model.loadAllocations(allocationsString3);
+            fail += "hibas honap ";
+        } catch (BusinessException ex) {
+            //jo ag
+        }
+        try {
+            model.loadAllocations(allocationsString4);
+            fail += "hibas ev ";
+        } catch (BusinessException ex) {
+            //jo ag
+        }
+        try {
+            model.loadAllocations(allocationsString5);
+            fail += "hibas hibas datum ";
+        } catch (BusinessException ex) {
+            //jo ag
+        }
+        assertEquals("", fail);
+
+
+    }
+    
 
     /**
      * Test of getTotalByPoint method, of class AllocationMemoryModel.

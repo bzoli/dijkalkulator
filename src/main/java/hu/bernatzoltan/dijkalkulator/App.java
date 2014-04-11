@@ -2,8 +2,8 @@ package hu.bernatzoltan.dijkalkulator;
 
 import hu.bernatzoltan.dijkalkulator.model.impl.AllocationMemoryModel;
 import hu.bernatzoltan.dijkalkulator.model.BusinessException;
-import hu.bernatzoltan.dijkalkulator.ui.StandardOutView;
-import hu.bernatzoltan.dijkalkulator.ui.SwingView;
+import hu.bernatzoltan.dijkalkulator.ui.standard.StandardOutView;
+import hu.bernatzoltan.dijkalkulator.ui.swing.SwingView;
 import java.io.File;
 
 
@@ -76,8 +76,7 @@ public class App {
         prefs.init();
         
         final AllocationMemoryModel model = AllocationMemoryModel.getInstance();
-        StandardOutView stdView = new StandardOutView(model);
-        final SwingView swingView;
+        
         
         if(args.length != 1 && args.length != 2){
             throw new BusinessException("Hiba. Indulási paraméterek száma 1 vagy 2 lehet.");
@@ -87,14 +86,15 @@ public class App {
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    final SwingView view = new SwingView(model);
-                    view.setVisible(true);
+                    SwingView swingView = new SwingView(model);
+                    swingView.setVisible(true);
                 }
             });
         } else if(SELECT_STANDARD_VIEW_PARAM.equals(args[0])){
             if(args.length!=2){
                 throw new BusinessException("Hiba. Hiányzik a 2. parameter.");
             } else {
+                StandardOutView stdView = new StandardOutView(model);
                 File file = new File(args[1]);
                 model.loadAllocations(file);
             }

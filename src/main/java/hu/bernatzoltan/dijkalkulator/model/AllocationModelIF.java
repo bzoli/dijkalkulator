@@ -16,6 +16,8 @@ public interface AllocationModelIF {
     public Map<String, Double> getTotalByPoint();
     public Map<String, Double> getTotalByCapacityType();
     
+    public String getOriginalText();
+    
     public void addModelListener(AllocationModelListenerIF listener);
     public void removeModelListener(AllocationModelListenerIF listener);
 }
