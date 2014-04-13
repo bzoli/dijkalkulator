@@ -50,7 +50,7 @@ public class AllocationMemoryModel implements AllocationModelIF {
         try {
             originalText = new String(Files.readAllBytes(allocationsFile.toPath()));
         } catch (IOException ex) {
-            throw new BusinessException(ex.getMessage());
+            throw new BusinessException(ex.toString());
         }
         //allocations = allocationParser.parse(allocationsFile);
         allocations = allocationParser.parse(originalText);

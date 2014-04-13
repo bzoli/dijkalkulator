@@ -79,7 +79,8 @@ public class AllocationMemoryModelTest {
             //jo ag
         }
         try {
-            model.loadAllocations(allocationsString4);
+            //hhh
+             model.loadAllocations(allocationsString4);
             fail += "hibas ev ";
         } catch (BusinessException ex) {
             //jo ag

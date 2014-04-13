@@ -4,6 +4,7 @@ import hu.bernatzoltan.dijkalkulator.model.impl.AllocationMemoryModel;
 import hu.bernatzoltan.dijkalkulator.model.BusinessException;
 import hu.bernatzoltan.dijkalkulator.ui.standard.StandardOutView;
 import hu.bernatzoltan.dijkalkulator.ui.swing.SwingView;
+import java.io.Console;
 import java.io.File;
 
 
@@ -91,14 +92,24 @@ public class App {
                 }
             });
         } else if(SELECT_STANDARD_VIEW_PARAM.equals(args[0])){
+            String filePath;
             if(args.length!=2){
-                throw new BusinessException("Hiba. Hiányzik a 2. parameter.");
+                //throw new BusinessException("Hiba. Hiányzik a 2. parameter.");
+                
+                //IDE alatt a consol null lesz. (java.exe versus javaw.exe, javaw eseten nincs konzol
+                //javaw a GUI-s alkalmazasoknak van, neetbeans/eclipse javaw-ot ad, igy null lesz a con)
+                Console con = System.console();
+                if(con==null){
+                    throw new BusinessException("Use java.exe instead of javaw.exe (from IDE), or use swing param!");
+                }
+                //f:\workspace\ipsystems\Dijkalkulator\allocations2.csv
+                filePath = con.readLine("\nMi a feldolgozando allomany?");
             } else {
-                StandardOutView stdView = new StandardOutView(model);
-                File file = new File(args[1]);
-                model.loadAllocations(file);
+                filePath = args[1];
             }
-            
+            StandardOutView stdView = new StandardOutView(model);
+            File file = new File(filePath);
+            model.loadAllocations(file);
         } else {
             throw new BusinessException("Hiba. Az elso inditasi parameter "
                     +SELECT_STANDARD_VIEW_PARAM
